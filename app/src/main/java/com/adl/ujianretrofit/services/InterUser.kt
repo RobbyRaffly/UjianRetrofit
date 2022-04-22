@@ -1,9 +1,6 @@
 package com.adl.ujianretrofit.services
 
-import com.adl.ujianretrofit.model.ResponseAddData
-import com.adl.ujianretrofit.model.ResponseCheckOut
-import com.adl.ujianretrofit.model.ResponseGetAbsen
-import com.adl.ujianretrofit.model.ResponseLogin
+import com.adl.ujianretrofit.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -13,6 +10,10 @@ interface InterUser {
     @Headers("x-api-key:A0867B853E8A6911C38827D19D3247FD")
     @GET("api/user_table/all")
     fun getUserLogin(@Query("filter")filters:String,@Query("field")field:String): Call<ResponseLogin>
+
+    @Headers("x-api-key:A0867B853E8A6911C38827D19D3247FD")
+    @GET("api/absen/all")
+    fun getHistory(@Query("filter")filters:String,@Query("field")field:String): Call<ResponseGetHistory>
 
     @Headers("x-api-key:A0867B853E8A6911C38827D19D3247FD")
     @GET("api/absen/all")

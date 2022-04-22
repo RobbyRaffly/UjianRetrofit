@@ -5,10 +5,12 @@
       <map>
         <entry key="..\:/Users/Robby AR/.gradle/caches/transforms-3/64183036b3f551ddbd584ae38f4b9c13/transformed/ucrop-2.2.7/res/drawable/ucrop_ic_cross.xml" value="0.1715" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/drawable/baseline_send.xml" value="0.1" />
+        <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/drawable/table_border.xml" value="0.1715" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/layout/activity_check_in.xml" value="0.4" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/layout/activity_history.xml" value="0.182518115942029" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/layout/activity_main_menu.xml" value="0.182518115942029" />
+        <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/layout/table_row_layout.xml" value="0.17239583333333333" />
         <entry key="..\:/Users/Robby AR/AndroidStudioProjects/UjianRetrofit/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1565" />
       </map>
     </option>
