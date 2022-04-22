@@ -3,6 +3,7 @@ package com.adl.ujianretrofit
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +36,7 @@ class MainMenu : AppCompatActivity() {
         if(result.resultCode == Activity.RESULT_OK){
             ceckout=true
             btnCheckin.setText("CHECK OUT")
+            btnCheckin.setBackgroundColor(Color.parseColor("#E9D5DA"))
         }
     }
 
@@ -70,6 +72,7 @@ class MainMenu : AppCompatActivity() {
                                 Toast.LENGTH_LONG).show()
                                 btnCheckin.setText("CHECK IN")
                                 ceckout=false
+                                btnCheckin.setBackgroundColor(Color.parseColor("#FF1818"))
 
                         }
 
