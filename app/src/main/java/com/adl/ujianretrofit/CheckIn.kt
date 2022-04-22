@@ -1,27 +1,19 @@
 package com.adl.ujianretrofit
 
 
-import android.Manifest
 import android.app.Activity
-import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.adl.ujianretrofit.model.ResponseAddData
 import com.adl.ujianretrofit.services.RetrofitConfig
-import com.github.drjacky.imagepicker.ImagePicker
+import com.anirudh.locationfetch.EasyLocationFetch
+import com.anirudh.locationfetch.GeoLocationModel
+
 import kotlinx.android.synthetic.main.activity_check_in.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -34,9 +26,13 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class CheckIn : AppCompatActivity(){
     var addImage:Boolean=false
+    var isDone:Boolean=false
+    lateinit var tanggalSekarang:String
     lateinit var lokasi:String
+    lateinit var geloc: GeoLocationModel
 
 
 
@@ -54,10 +50,18 @@ class CheckIn : AppCompatActivity(){
             }
         }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_in)
         setupUI()
+
+        geloc = EasyLocationFetch(this@CheckIn).getLocationData()
+        lokasi=geloc.lattitude.toString()+" , " +geloc.longitude.toString()
+
+
+
 
     }
 
@@ -65,7 +69,7 @@ class CheckIn : AppCompatActivity(){
     private fun setupUI() {
 
             btnSend.setOnClickListener(){
-                if(addImage==false){// && btnSend.text.toString()=="LOGIN FOTO SELFIE"){
+                if(addImage==false && isDone==false){// && btnSend.text.toString()=="LOGIN FOTO SELFIE"){
                     cameraLauncher.launch(
                         com.github.drjacky.imagepicker.ImagePicker.with(this)
                             .crop()
@@ -74,25 +78,27 @@ class CheckIn : AppCompatActivity(){
                             .createIntent())
 
                     addImage=true
-                }else if(addImage==true){
+                }else if(addImage==true && isDone==false){
                     var tanggal=Calendar.getInstance()
                     val formatDate = "yyyy-MM-dd HH:mm:ss"
                     val sdf = SimpleDateFormat(formatDate, Locale.US)
-                    var tanggalSekarang=sdf.format(tanggal.time)
+                    tanggalSekarang=sdf.format(tanggal.time)
 
                     RetrofitConfig().getUser().addDataAndImage(
                         uploadImage(photoURI,"foto"), createRB(userSekarang),
                         createRB(tanggalSekarang.toString()), createRB(""),
-                        createRB("2, 2")).enqueue(
+                        createRB(lokasi)).enqueue(
                         object:Callback<ResponseAddData>{
                             override fun onResponse(
                                 call: Call<ResponseAddData>,
                                 response: Response<ResponseAddData>
                             ) {
                                 Toast.makeText(this@CheckIn,(response.body() as ResponseAddData).message,Toast.LENGTH_LONG).show()
-                                txtResponse.setText("Login Foto Selfie Berhasil!`")
+                                txtResponse.setText("Login Foto Selfie Berhasil!")
                                 Photo.setImageDrawable(getDrawable(R.drawable.success))
                                 btnSend.setText("DONE")
+                                txtGeo.setText("GeoTag: "+lokasi)
+                                isDone=true
 
                             }
 
@@ -101,11 +107,15 @@ class CheckIn : AppCompatActivity(){
                                 txtResponse.setText("Login Foto Selfie Gagal!`")
                                 Photo.setImageDrawable(getDrawable(com.yalantis.ucrop.R.drawable.ucrop_ic_cross))
                                 btnSend.setText("RE-SCAN")
+                                isDone=false
                             }
 
                         }
                     )
-                }else{
+                }else if(addImage==true && isDone==true){
+
+                }
+                else{
                     //addImage=false
                     val intent = Intent(this@CheckIn, MainMenu::class.java)
                     startActivity(intent)
