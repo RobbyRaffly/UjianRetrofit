@@ -34,6 +34,12 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/btnAddFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add image" />
+
+    <Button
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

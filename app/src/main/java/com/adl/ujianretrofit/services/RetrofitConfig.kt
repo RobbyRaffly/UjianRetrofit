@@ -19,7 +19,7 @@ class RetrofitConfig {
 
     fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(" https://25f3-125-164-3-60.ap.ngrok.io/cicool/")//("http://192.168.1.68/cicool/")//("http://www.omdbapi.com/")
+            .baseUrl("https://25f3-125-164-3-60.ap.ngrok.io/cicool/")//("http://192.168.1.68/cicool/")//("http://www.omdbapi.com/")
             .client(getInterceptor())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
