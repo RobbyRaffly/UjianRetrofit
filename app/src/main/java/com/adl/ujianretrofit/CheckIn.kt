@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.adl.ujianretrofit.model.ResponseAddData
+import com.adl.ujianretrofit.model.ResponseGetAbsen
+import com.adl.ujianretrofit.model.ResponseLogin
 import com.adl.ujianretrofit.services.RetrofitConfig
 import com.anirudh.locationfetch.EasyLocationFetch
 import com.anirudh.locationfetch.GeoLocationModel
@@ -26,17 +28,19 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+lateinit var tanggalSekarang:String
+lateinit var lokasi:String
+lateinit var photoURI: Uri
+var idAbsen:Int=0
 class CheckIn : AppCompatActivity(){
     var addImage:Boolean=false
     var isDone:Boolean=false
-    lateinit var tanggalSekarang:String
-    lateinit var lokasi:String
+
     lateinit var geloc: GeoLocationModel
 
 
 
-    lateinit var photoURI: Uri
+
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -108,12 +112,38 @@ class CheckIn : AppCompatActivity(){
                                 Photo.setImageDrawable(getDrawable(com.yalantis.ucrop.R.drawable.ucrop_ic_cross))
                                 btnSend.setText("RE-SCAN")
                                 isDone=false
+                                addImage=false
                             }
 
                         }
                     )
                 }else if(addImage==true && isDone==true){
+                    addImage=false
+                    isDone=false
 
+                    RetrofitConfig().getUser().getDataAbsen(
+                        "1","DESC").enqueue(
+                        object:Callback<ResponseGetAbsen>{
+                            override fun onResponse(
+                                call: Call<ResponseGetAbsen>,
+                                response: Response<ResponseGetAbsen>
+                            ) {
+                                val data: ResponseGetAbsen? = response.body()
+                                Log.e("error post data",response.body().toString())
+                                Toast.makeText(this@CheckIn,(response.body() as ResponseGetAbsen).message,Toast.LENGTH_LONG).show()
+                                idAbsen= data?.data?.absen!![0]?.id!!.toInt()
+                            }
+
+                            override fun onFailure(call: Call<ResponseGetAbsen>, t: Throwable) {
+                                Log.e("error post data",t.localizedMessage.toString())
+
+                            }
+
+                        }
+                    )
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
                 }
                 else{
                     //addImage=false

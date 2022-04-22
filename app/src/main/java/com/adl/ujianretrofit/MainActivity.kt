@@ -13,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 lateinit var userSekarang:String
+var idUser:Int=0
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
                       //  Log.d("Response", response.body().toString())
                         val data: ResponseLogin? = response.body()
                         userSekarang= data?.data?.userTable!![0]?.username.toString()
-                        Log.d("Response", userSekarang.toString())
+                        idUser= data?.data?.userTable!![0]?.idUser?.toInt() ?:
+                        Log.d("Response", userSekarang.toString() )
                         Toast.makeText(this@MainActivity, "Login berhasil", Toast.LENGTH_LONG)
                             .show()
                         //dataGenerate(data?.data?.adlNews as List<AdlNewsItem>)
