@@ -15,6 +15,7 @@
         android:id="@+id/btnCheckin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:backgroundTint="@android:color/holo_red_light"
         android:drawableTop="?attr/actionModePasteDrawable"
         android:drawableTint="@color/white"
@@ -32,6 +33,7 @@
             android:id="@+id/btnHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_red_light"
             android:drawableTop="@android:drawable/ic_menu_recent_history"
@@ -41,6 +43,7 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:drawableTop="@android:drawable/btn_dialog"
             android:text="Logout" />

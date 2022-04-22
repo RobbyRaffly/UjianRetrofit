@@ -25,15 +25,17 @@ class MainMenu : AppCompatActivity() {
         setContentView(R.layout.activity_main_menu)
 
         btnCheckin.setOnClickListener(){
-            if(ceckout==false) {
+            if(ceckout==false&&btnCheckin.text=="CHECK IN") {
                 val intent = Intent(this@MainMenu, CheckIn::class.java)
                 //resultLauncher.launch(intent)
 
                 startActivity(intent)
                 ceckout=true
+
                 btnCheckin.setText("CHECK OUT")
             }else{
                 btnCheckin.setText("CHECK IN")
+                ceckout=false
             }
         }
 
