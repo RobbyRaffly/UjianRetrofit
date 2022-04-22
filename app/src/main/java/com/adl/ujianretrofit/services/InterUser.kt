@@ -18,8 +18,8 @@ interface InterUser {
     @Multipart
     @Headers("X-Api-Key:6D83551EAC167A26DC10BB7609EA9AEF")
     @POST("api/absen/add")
-    fun addDataAndImage(@Part file: MultipartBody.Part, @Part("username") username:String,
-                        @Part("tanggal_masuk")tanggal_masuk:String,@Part("tanggal_keluar")tanggal_keluar:String,
-                        @Part("lokasi_GPS")lokasi_GPS:String):Call<ResponseAddData>
+    fun addDataAndImage(@Part file: MultipartBody.Part, @Part("username") username:RequestBody,
+                        @Part("tanggal_masuk")tanggal_masuk:RequestBody,@Part("tanggal_keluar")tanggal_keluar:RequestBody,
+                        @Part("lokasi_GPS")lokasi_GPS:RequestBody):Call<ResponseAddData>
 
 }

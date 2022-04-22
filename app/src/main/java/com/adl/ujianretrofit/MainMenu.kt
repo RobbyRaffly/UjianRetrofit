@@ -23,10 +23,18 @@ class MainMenu : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+
         btnCheckin.setOnClickListener(){
-            val intent = Intent(this@MainMenu,CheckIn::class.java)
-            //resultLauncher.launch(intent)
-            startActivity(intent)
+            if(ceckout==false) {
+                val intent = Intent(this@MainMenu, CheckIn::class.java)
+                //resultLauncher.launch(intent)
+
+                startActivity(intent)
+                ceckout=true
+                btnCheckin.setText("CHECK OUT")
+            }else{
+                btnCheckin.setText("CHECK IN")
+            }
         }
 
         btnHistory.setOnClickListener(){
