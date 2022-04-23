@@ -54,15 +54,15 @@ class History : AppCompatActivity() {
                         val dt = LocalDateTime.parse(tanggal, formatter)
                         val dtCeckout = LocalDateTime.parse(tglKeluar, formatter)
 
-                        val hari:Int=dt.dayOfWeek.value
+                        val hari:Int=dt.dayOfMonth
                         val bulan:String=dt.month.toString()
 
                         val jamMasuk:String=dt.hour.toString()
                         val menitMasuk:String=dt.minute.toString()
                         val jamKeluar:String=dtCeckout.hour.toString()
-                        val menitKeluar:String=dtCeckout.hour.toString()
+                        val menitKeluar:String=dtCeckout.minute.toString()
 
-                        hisList.add(HistoryModel("${hari.toString()} ${bulan}","${jamMasuk}:${menitMasuk}", "${jamKeluar}:${menitKeluar}" ))
+                        hisList.add(HistoryModel("${hari} ${bulan}","${jamMasuk}:${menitMasuk}", "${jamKeluar}:${menitKeluar}" ))
                     }
 
 
