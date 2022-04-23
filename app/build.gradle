@@ -81,3 +81,11 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
+
+
+
+dependencies {
+
+// To use Kotlin annotation processing tool (kapt)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+}

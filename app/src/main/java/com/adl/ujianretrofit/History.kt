@@ -8,13 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.adl.ujianretrofit.adapter.TableRowAdapter
+import com.adl.ujianretrofit.model.AbsenItemHistory
 import com.adl.ujianretrofit.model.HistoryModel
 import com.adl.ujianretrofit.model.ResponseGetHistory
 import com.adl.ujianretrofit.services.RetrofitConfig
+import kotlinx.android.synthetic.main.activity_history.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class History : AppCompatActivity() {
@@ -22,11 +27,12 @@ class History : AppCompatActivity() {
     private var hisList = ArrayList<HistoryModel>()
     private lateinit var tableRowAdapter: TableRowAdapter
     private lateinit var history : HistoryModel
+    lateinit var lstHis : List<AbsenItemHistory>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
-
+        val bulanArr:Array<String> = arrayOf("Jan", "Feb", "Mar", "Apr", "Mei", "Jun","Jul", "Aug","Sept","Okt","Nov","Des")
         RetrofitConfig().getUser()
             .getHistory(
                 userSekarang.toString(),"username"
@@ -36,26 +42,52 @@ class History : AppCompatActivity() {
                     call: Call<ResponseGetHistory>,
                     response: Response<ResponseGetHistory>
                 ) {
+                    hisList.clear()
                       Log.d("Response", response.body().toString())
                     val data: ResponseGetHistory? = response.body()
-                    var tanggal:String= data?.data?.absen!![0]?.tanggalMasuk.toString()
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-                    val dt = LocalDate.parse(tanggal, formatter)
 
-                    val hari:String=dt.dayOfWeek.toString()
-                    var bulan:String=dt.month.toString()
+                    lstHis = data?.data?.absen as List<AbsenItemHistory>
+                    lstHis.forEach {
+                        val tanggal:String= it.tanggalMasuk.toString()
+                        val tglKeluar:String = it.tanggalKeluar.toString()
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        val dt = LocalDateTime.parse(tanggal, formatter)
+                        val dtCeckout = LocalDateTime.parse(tglKeluar, formatter)
 
-                    hisList.add(HistoryModel(tanggal, hari, bulan))
+                        val hari:Int=dt.dayOfWeek.value
+                        val bulan:String=dt.month.toString()
 
-                    Toast.makeText(this@History, "Login berhasil", Toast.LENGTH_LONG)
+                        val jamMasuk:String=dt.hour.toString()
+                        val menitMasuk:String=dt.minute.toString()
+                        val jamKeluar:String=dtCeckout.hour.toString()
+                        val menitKeluar:String=dtCeckout.hour.toString()
+
+                        hisList.add(HistoryModel("${hari.toString()} ${bulan}","${jamMasuk}:${menitMasuk}", "${jamKeluar}:${menitKeluar}" ))
+                    }
+
+
+                    GlobalScope.launch {
+                        this@History.runOnUiThread({
+                            tableRowAdapter= TableRowAdapter(hisList)
+                            table_recycler_view.apply {
+                                layoutManager = LinearLayoutManager(this@History)
+                                adapter = tableRowAdapter
+                            }
+                            tableRowAdapter.notifyDataSetChanged()
+                        })
+                    }
+
+
+                    Toast.makeText(this@History, "Ambil data history sukses", Toast.LENGTH_LONG)
                         .show()
                     //dataGenerate(data?.data?.adlNews as List<AdlNewsItem>)
 
                 }
 
                 override fun onFailure(call: Call<ResponseGetHistory>, t: Throwable) {
-                    Toast.makeText(this@History, "Login Gagal", Toast.LENGTH_LONG)
+                    Toast.makeText(this@History, "Ambil data history gagal", Toast.LENGTH_LONG)
                         .show()
+                    Log.d("Response", t.localizedMessage)
                 }
 
 
